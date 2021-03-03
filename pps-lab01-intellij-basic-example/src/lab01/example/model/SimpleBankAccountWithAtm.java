@@ -1,10 +1,16 @@
 package lab01.example.model;
 
-public class SimpleATMBankAccount extends SimpleBankAccount implements ATMBankAccount {
+/**
+ * This class represent a particular instance of a ATMBankAccount.
+ * In particular, a Bank Account that allows, in addition to the possibilities given by
+ * {@link SimpleBankAccountWithAtm}, to deposit and withdraw using the ATM; each transition
+ * implies pay a fee
+ */
+public class SimpleBankAccountWithAtm extends SimpleBankAccount implements ATMBankAccount {
 
     private static final double TRANSITION_FEE = 1;
 
-    public SimpleATMBankAccount(final AccountHolder holder, final double balance) {
+    public SimpleBankAccountWithAtm(final AccountHolder holder, final double balance) {
         super(holder, balance);
     }
 
