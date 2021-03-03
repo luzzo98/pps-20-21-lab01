@@ -9,20 +9,10 @@ public class SimpleATMBankAccount extends SimpleBankAccount implements ATMBankAc
     }
 
     @Override
-    public boolean canWithdrawWithATM(double amount) {
-        return super.getBalance() >= (amount + TRANSITION_FEE);
-    }
-
-    @Override
-    public void applyTransitionFee(int usrID) {
-        super.withdraw(usrID, TRANSITION_FEE);
-    }
-
-    @Override
     public void depositWithATM(int usrID, double amount) {
-        if (usrID==super.getHolder().getId() && TRANSITION_FEE<amount) {
-            this.applyTransitionFee(usrID);
+        if (usrID==super.getHolder().getId() && canDepositWithATM(amount)) {
             super.deposit(usrID,amount);
+            this.applyTransitionFee(usrID);
         }
     }
 
@@ -37,5 +27,28 @@ public class SimpleATMBankAccount extends SimpleBankAccount implements ATMBankAc
     @Override
     public double getTransitionFee(){
         return TRANSITION_FEE;
+    }
+
+    /**
+     * Return if it's possible execute the deposit in order to pay the fee
+     * @return if it's possible to deposit
+     */
+    private boolean canDepositWithATM(double amount) {
+        return TRANSITION_FEE<amount;
+    }
+
+    /**
+     * Return if it's possible withdraw in order to pay the fee
+     * @return if it's possible to withdraw
+     */
+    private boolean canWithdrawWithATM(double amount) {
+        return super.getBalance() >= (amount + TRANSITION_FEE);
+    }
+
+    /**
+     * Decrease the balance in order to pay the transaction fee
+     */
+    private void applyTransitionFee(int usrID) {
+        super.withdraw(usrID, TRANSITION_FEE);
     }
 }

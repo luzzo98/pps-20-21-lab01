@@ -6,17 +6,6 @@ package lab01.example.model;
 public interface ATMBankAccount extends BankAccount {
 
     /**
-     * Return if it's possible execute the transition in order to pay the fee
-     * @return if it's possible execute the transition
-     */
-    boolean canWithdrawWithATM(double amount);
-
-    /**
-     * Decrease the balance in order to pay the transition fee
-     */
-    void applyTransitionFee(int usrID);
-
-    /**
      * Allows the deposit of an amount on the account with the ATM, if the given usrID corresponds to the register
      * holder ID of the bank account and if the fee is lower to the amount. This ID acts like an "identification token".
      *
@@ -35,8 +24,8 @@ public interface ATMBankAccount extends BankAccount {
     void withdrawWithATM(int usrID, double amount);
 
     /**
-     * Return the amount of the transition fee
-     * @return the transition fee
+     * Return the actual amount of the transaction fee
+     * @return the transaction fee
      */
     double getTransitionFee();
 }
