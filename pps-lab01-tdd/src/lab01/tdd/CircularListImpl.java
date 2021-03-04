@@ -1,16 +1,13 @@
 package lab01.tdd;
 
-import java.text.Collator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class CircularListImpl implements CircularList {
 
     private final List<Integer> integerList = new LinkedList<>();
     private int actualPosition = -1;
-    private int firstElement = 0;
 
     @Override
     public void add(int element) {
@@ -39,7 +36,7 @@ public class CircularListImpl implements CircularList {
 
     @Override
     public void reset() {
-        firstElement = actualPosition;
+        actualPosition = size() == 0? -1 : 0;
     }
 
     @Override

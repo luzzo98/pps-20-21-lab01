@@ -69,7 +69,9 @@ public class CircularListTest {
     void testReset() {
         addThreeIntegerExample();
         circularList.next();
+        circularList.next();
         circularList.reset();
+        assertEquals(SECOND_EXAMPLE_INTEGER, circularList.next().get());
     }
 
     @Test
