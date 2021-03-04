@@ -1,5 +1,6 @@
 import lab01.tdd.CircularList;
 import lab01.tdd.CircularListImpl;
+import lab01.tdd.SelectStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,8 +14,9 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CircularListTest {
 
     private static final int EXAMPLE_INTEGER = 1;
-    private static final int SECOND_EXAMPLE_INTEGER = 2;
-    private static final int THIRD_EXAMPLE_INTEGER = 3;
+    private static final int SECOND_EXAMPLE_INTEGER = 4;
+    private static final int THIRD_EXAMPLE_INTEGER = 9;
+    private static final int MULTIPLE_OF_FOUR = 16;
     private CircularList circularList;
 
     @BeforeEach
@@ -68,6 +70,49 @@ public class CircularListTest {
         addThreeIntegerExample();
         circularList.next();
         circularList.reset();
+    }
+
+    @Test
+    void testNextWithStrategy(){
+        addThreeIntegerExample();
+        SelectStrategy positiveStrategy = element -> element>=0;
+        assertEquals(EXAMPLE_INTEGER, circularList.next(positiveStrategy).get());
+        circularList.next(positiveStrategy);
+        assertEquals(THIRD_EXAMPLE_INTEGER, circularList.next(positiveStrategy).get());
+    }
+
+    @Test
+    void testNextWithOddStrategy(){
+        addThreeIntegerExample();
+        SelectStrategy oddStrategy = element -> element%2==1;
+        assertEquals(EXAMPLE_INTEGER, circularList.next(oddStrategy).get());
+        assertEquals(THIRD_EXAMPLE_INTEGER, circularList.next(oddStrategy).get());
+    }
+
+    @Test
+    void testNextWithEvenStrategy(){
+        addThreeIntegerExample();
+        SelectStrategy evenStrategy = element -> element%2==0;
+        assertEquals(SECOND_EXAMPLE_INTEGER, circularList.next(evenStrategy).get());
+        //if there is only the current element that satisfies the strategy, another "next(strategy)" will return a Optional.empty()
+        assertEquals(Optional.empty(), circularList.next(evenStrategy));
+    }
+
+    @Test
+    void testNextWithMultiplyStrategy(){
+        addThreeIntegerExample();
+        circularList.add(MULTIPLE_OF_FOUR);
+        SelectStrategy evenStrategy = element -> element%SECOND_EXAMPLE_INTEGER==0;
+        assertEquals(SECOND_EXAMPLE_INTEGER, circularList.next(evenStrategy).get());
+        assertEquals(MULTIPLE_OF_FOUR, circularList.next(evenStrategy).get());
+        assertEquals(SECOND_EXAMPLE_INTEGER, circularList.next(evenStrategy).get());
+    }
+
+    @Test
+    void testNextWithEqualStrategy(){
+        addThreeIntegerExample();
+        SelectStrategy positiveStrategy = element -> element==THIRD_EXAMPLE_INTEGER;
+        assertEquals(THIRD_EXAMPLE_INTEGER, circularList.next(positiveStrategy).get());
     }
 
     private void addThreeIntegerExample() {

@@ -1,8 +1,10 @@
 package lab01.tdd;
 
+import java.text.Collator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class CircularListImpl implements CircularList {
 
@@ -42,6 +44,15 @@ public class CircularListImpl implements CircularList {
 
     @Override
     public Optional<Integer> next(SelectStrategy strategy) {
+        if (isEmpty()) {
+            return Optional.empty();
+        }
+        int firstControlledPosition = actualPosition;
+        while (updatePosition(true) != firstControlledPosition) {
+            if (strategy.apply(integerList.get(actualPosition))) {
+                return Optional.of(integerList.get(actualPosition));
+            }
+        }
         return Optional.empty();
     }
 
