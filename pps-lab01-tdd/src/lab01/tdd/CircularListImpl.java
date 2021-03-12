@@ -26,12 +26,12 @@ public class CircularListImpl implements CircularList {
 
     @Override
     public Optional<Integer> next() {
-        return movementInList(true);
+        return shiftList(true);
     }
 
     @Override
     public Optional<Integer> previous() {
-        return movementInList(false);
+        return shiftList(false);
     }
 
     @Override
@@ -44,12 +44,12 @@ public class CircularListImpl implements CircularList {
         if (isEmpty()) {
             return Optional.empty();
         }
-        int firstControlledPosition = actualPosition;
-        while (updatePosition(true) != firstControlledPosition) {
+        int firstControlledPosition = updatePosition(true);
+        do {
             if (strategy.apply(integerList.get(actualPosition))) {
                 return Optional.of(integerList.get(actualPosition));
             }
-        }
+        } while (updatePosition(true) != firstControlledPosition);
         return Optional.empty();
     }
 
@@ -66,7 +66,7 @@ public class CircularListImpl implements CircularList {
         return actualPosition;
     }
 
-    private Optional<Integer> movementInList(boolean isNext) {
+    private Optional<Integer> shiftList(boolean isNext) {
         if (isEmpty()){
             return Optional.empty();
         }

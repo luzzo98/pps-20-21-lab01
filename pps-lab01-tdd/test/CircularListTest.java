@@ -96,8 +96,8 @@ public class CircularListTest {
         addThreeIntegerExample();
         SelectStrategy evenStrategy = strategyFactory.createEvenStrategy();
         assertEquals(SECOND_EXAMPLE_INTEGER, circularList.next(evenStrategy).get());
-        //if there is only the current element that satisfies the strategy, another "next(strategy)" will return a Optional.empty()
-        assertEquals(Optional.empty(), circularList.next(evenStrategy));
+        //if there is only the current element that satisfies the strategy, another "next(strategy)" will return the same element
+        assertEquals(SECOND_EXAMPLE_INTEGER, circularList.next(evenStrategy).get());
     }
 
     @Test
@@ -115,6 +115,14 @@ public class CircularListTest {
         addThreeIntegerExample();
         SelectStrategy equalStrategy = strategyFactory.createEqualStrategy(THIRD_EXAMPLE_INTEGER);
         assertEquals(THIRD_EXAMPLE_INTEGER, circularList.next(equalStrategy).get());
+    }
+
+    @Test
+    void testNextWithNoMatch(){
+        circularList.add(THIRD_EXAMPLE_INTEGER);
+        SelectStrategy multiplyStrategy = strategyFactory.createMultiplyStrategy(SECOND_EXAMPLE_INTEGER);
+        assertEquals(Optional.empty(), circularList.next(multiplyStrategy));
+        assertEquals(Optional.empty(), circularList.next(multiplyStrategy));
     }
 
     private void addThreeIntegerExample() {

@@ -33,21 +33,22 @@ public class SimpleBankAccountWithAtmTest extends SimpleBankAccountTest {
 
     @Test
     void testWrongDepositWithATM() {
-        atmBankAccount.depositWithATM(accountHolder.getId(), 0);
-        assertEquals(atmBankAccount.getBalance(), 0);
+        atmBankAccount.deposit(accountHolder.getId(), TEST_AMOUNT);
+        atmBankAccount.depositWithATM(accountHolder.getId(), 0.5); //try to deposit an amount < of the fee
+        assertEquals(atmBankAccount.getBalance(), TEST_AMOUNT);
     }
 
     @Test
     void testWithdrawWithATM() {
         atmBankAccount.deposit(accountHolder.getId(), TEST_AMOUNT);
         atmBankAccount.withdrawWithATM(accountHolder.getId(), LITTLE_TEST_AMOUNT);
-        assertEquals(atmBankAccount.getBalance(), TEST_AMOUNT-LITTLE_TEST_AMOUNT- atmBankAccount.getTransitionFee());
+        assertEquals(atmBankAccount.getBalance(), TEST_AMOUNT - LITTLE_TEST_AMOUNT - atmBankAccount.getTransitionFee());
     }
 
     @Test
     void testWrongWithdrawWithATM() {
         atmBankAccount.deposit(accountHolder.getId(), TEST_AMOUNT);
-        atmBankAccount.withdrawWithATM(accountHolder.getId(), TEST_AMOUNT);
+        atmBankAccount.withdrawWithATM(accountHolder.getId(), TEST_AMOUNT); //try to withdraw an amount equal to the balance
         assertEquals(atmBankAccount.getBalance(), TEST_AMOUNT);
     }
 }

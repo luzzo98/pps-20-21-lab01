@@ -23,8 +23,9 @@ public interface BankAccount {
      *
      * @param usrID the id of the user that wants do the deposit
      * @param amount the amount of the deposit
+     * @return whether the transaction was successful or not
      */
-    void deposit(int usrID, double amount);
+    boolean deposit(int usrID, double amount);
 
     /**
      * Allows the withdraw of an amount from the account, if the given usrID corresponds to the register holder ID
@@ -32,6 +33,7 @@ public interface BankAccount {
      *
      * @param usrID the id of the user that wants do the withdraw
      * @param amount the amount of the withdraw
+     * @return whether the transaction was successful or not
      */
-    void withdraw(int usrID, double amount);
+    boolean withdraw(int usrID, double amount);
 }

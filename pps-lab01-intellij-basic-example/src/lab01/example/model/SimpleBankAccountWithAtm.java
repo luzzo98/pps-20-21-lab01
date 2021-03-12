@@ -16,18 +16,16 @@ public class SimpleBankAccountWithAtm extends SimpleBankAccount implements ATMBa
 
     @Override
     public void depositWithATM(int usrID, double amount) {
-        if (usrID==super.getHolder().getId() && canDepositWithATM(amount)) {
-            super.deposit(usrID,amount);
-            this.applyTransitionFee(usrID);
+        if (canDepositWithATM(amount)) {
+            if (super.deposit(usrID,amount)) {
+                this.applyTransitionFee(usrID);
+            }
         }
     }
 
     @Override
     public void withdrawWithATM(int usrID, double amount) {
-        if (usrID==super.getHolder().getId() && canWithdrawWithATM(amount)) {
-            this.applyTransitionFee(usrID);
-            super.withdraw(usrID, amount);
-        }
+        super.withdraw(usrID, amount + TRANSITION_FEE);
     }
 
     @Override
@@ -41,14 +39,6 @@ public class SimpleBankAccountWithAtm extends SimpleBankAccount implements ATMBa
      */
     private boolean canDepositWithATM(double amount) {
         return TRANSITION_FEE<amount;
-    }
-
-    /**
-     * Return if it's possible withdraw in order to pay the fee
-     * @return if it's possible to withdraw
-     */
-    private boolean canWithdrawWithATM(double amount) {
-        return super.getBalance() >= (amount + TRANSITION_FEE);
     }
 
     /**
